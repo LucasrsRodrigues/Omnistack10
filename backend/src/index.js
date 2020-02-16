@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+
+const cors = require('cors');
+
 const app = express();
 
 mongoose.connect('mongodb+srv://lucasr:123@cluster0-zjnbg.mongodb.net/test?retryWrites=true&w=majority',{
@@ -9,6 +12,8 @@ mongoose.connect('mongodb+srv://lucasr:123@cluster0-zjnbg.mongodb.net/test?retry
 
 } );
 
+
+app.use(cors());
 app.use(express.json()); //algo que sera valido para todas as rotas
 app.use(routes);
 //GET => pegar

@@ -20,6 +20,7 @@ function App() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
 
+  const [ devs, setDevs]= useState([]);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -38,6 +39,15 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    async function loadDevs(){
+      const response = await api.get('/devs');
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
   async function handleAddDev(e) {
     e.preventDefault();
 
@@ -47,8 +57,9 @@ function App() {
       latitude,
       longitude
     })
-    console.log(response.data)
-
+    // console.log(response.data)
+    setGithub_username('');
+    setTechs('');
 
   }
 
@@ -92,59 +103,23 @@ function App() {
       </aside>
       <main>
         <ul>
-          <li className="dev-item">
+          {devs.map(dev => (
+            <li className="dev-item">
             <header>
-              <img src="https://avatars0.githubusercontent.com/u/58940345?s=460&v=4" alt=""/>
+              <img src={dev.avatar_url} alt={dev.name}/>
               <div className="user-info">
-                <strong>Lucas Rodrigues</strong>
-                <span>ReactJS, React Native, Node.js</span>
+                <strong>{dev.name}</strong>
+                <span>{dev.techs.join(', ')}</span>
               </div>
             </header>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, rem.
+              {dev.bio}  
             </p>
-            <a href="https://github.com/LucasrsRodrigues">Acessar Perfil no Github</a>
+            <a href={`https://github.com/${dev.github_username}`}>Acessar Perfil no Github</a>
           </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars0.githubusercontent.com/u/58940345?s=460&v=4" alt=""/>
-              <div className="user-info">
-                <strong>Lucas Rodrigues</strong>
-                <span>ReactJS, React Native, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, rem.
-            </p>
-            <a href="https://github.com/LucasrsRodrigues">Acessar Perfil no Github</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars0.githubusercontent.com/u/58940345?s=460&v=4" alt=""/>
-              <div className="user-info">
-                <strong>Lucas Rodrigues</strong>
-                <span>ReactJS, React Native, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, rem.
-            </p>
-            <a href="https://github.com/LucasrsRodrigues">Acessar Perfil no Github</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars0.githubusercontent.com/u/58940345?s=460&v=4" alt=""/>
-              <div className="user-info">
-                <strong>Lucas Rodrigues</strong>
-                <span>ReactJS, React Native, Node.js</span>
-              </div>
-            </header>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, rem.
-            </p>
-            <a href="https://github.com/LucasrsRodrigues">Acessar Perfil no Github</a>
-          </li>
-        </ul>
+          ))}         
+
+          </ul>
       </main>
     </div>
   );

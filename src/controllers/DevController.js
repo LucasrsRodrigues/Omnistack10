@@ -1,6 +1,6 @@
 const axios = require('axios');
 const Dev = require('../models/Dev');
-
+const parseStringAsArray = require('../utils/pareseStringAsArray');
 
 // index (lista), show (unico), store (crar), update (alterar), destroy(deletar)
 module.exports= {
@@ -26,7 +26,7 @@ module.exports= {
   
       // console.log(name, avatar_url, bio, github_username);
   
-      const techsArray = techs.split(',').map(tech => tech.trim());
+      const techsArray = parseStringAsArray(techs);
       const location = {
         type: 'Point',
         coordinates: [longitude, latitude]
